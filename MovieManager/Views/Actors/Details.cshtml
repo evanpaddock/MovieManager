@@ -1,4 +1,4 @@
-﻿@model MovieManager.Models.ActorDetails
+﻿@model MovieManager.Models.ActorDetailsVM
 
 @{
     ViewData["Title"] = $"{Model.Actor.Name} Details";
@@ -7,7 +7,7 @@
 <h1>@Html.DisplayFor(model => model.Actor.Name) Details</h1>
 
 <div>
-    <h4>Overall, Reddit showed that '@Html.DisplayFor(model => model.Actor.Name)' was @Html.DisplayFor(model => model.SentimentAnalyzer.PercentScore)% @Html.DisplayFor(model => model.SentimentAnalyzer.PosNegNeu)</h4>
+    <h4>Overall, Reddit showed that sentiment for '@Html.DisplayFor(model => model.Actor.Name)' was @Html.DisplayFor(model => model.SentimentAnalyzer.PercentScore)% @Html.DisplayFor(model => model.SentimentAnalyzer.PosNegNeu)</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -35,8 +35,19 @@
         <dd class="col-sm-10">
             <a href="@Html.DisplayFor(model => model.Actor.IMDB_Url)">@Html.DisplayFor(model => model.Actor.IMDB_Url)</a>
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Actor.Photo)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Actor.Photo != null && Model.Actor.Photo.Length != 0)
+            {
+                <img height="150" src="@Url.Action("GetActorPhoto", "Actors", new {Model.Actor.Id})" />
+            }
+        </dd>
     </dl>
-    <table class="table">
+    <h1>@Html.DisplayFor(model => model.Actor.Name) Movies</h1>
+    
+    <table @(Model.Movies.Count > 1 ? "id = myTable" : "") class="table">
         <thead>
             <tr>
                 <th>
@@ -54,7 +65,6 @@
                 <th>
                     IMDB Link
                 </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -71,26 +81,26 @@
                         @Html.DisplayFor(modelItem => item.Year_Of_Release)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Media)
+                        @if (item.Media != null && item.Media.Length != 0)
+                        {
+                            <img height="150" src="@Url.Action("GetMovieMedia", "Movies", new {item.Id})" />
+                        }
                     </td>
-                    @if (item.Media != null && item.Media.Length != 0)
-                    {
-                        <img height="150" src="@Url.Action("GetActorPhoto", "Actors", new {item.Id})" />
-                    }
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-controller="Movies" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="Movies" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    <h1>@Html.DisplayFor(model => model.Actor.Name) Reddit Analysis</h1>
     <table class="table">
         <thead>
             <tr>
                 <th>Top 100 Posts</th>
-                <th>Sentiment</th>
+                <th>Overall Sentiment</th>
             </tr>
         </thead>
         <tbody>
@@ -104,7 +114,7 @@
                     </div>
                 </td>
                 <td>
-                    <p>Overall, Reddit showed that '@Html.DisplayFor(model => model.Actor.Name)' was @Html.DisplayFor(model => model.SentimentAnalyzer.PercentScore)% @Html.DisplayFor(model => model.SentimentAnalyzer.PosNegNeu).</p>
+                    <p>@Html.DisplayFor(model => model.SentimentAnalyzer.PercentScore)% @Html.DisplayFor(model => model.SentimentAnalyzer.PosNegNeu)</p>
                 </td>
             </tr>
         </tbody>

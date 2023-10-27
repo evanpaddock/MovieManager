@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -23,20 +23,21 @@
                 <span asp-validation-for="Genre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Year_Of_Release" class="control-label"></label>
+                <label asp-for="Year_Of_Release" class="control-label">Release Year</label>
                 <input asp-for="Year_Of_Release" class="form-control" />
                 <span asp-validation-for="Year_Of_Release" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Media" class="control-label"></label>
-                <input asp-for="Media" class="form-control" />
-                <span asp-validation-for="Media" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IMDB_Url" class="control-label"></label>
+                <label asp-for="IMDB_Url" class="control-label">Link to IMBD Page</label>
                 <input asp-for="IMDB_Url" class="form-control" />
                 <span asp-validation-for="IMDB_Url" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Media" class="control-label"></label>
+                <input type="file" name="Media" id="Media" multiple class="form-control" />
+                <span asp-validation-for="Media" class="text-danger"></span>
+            </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

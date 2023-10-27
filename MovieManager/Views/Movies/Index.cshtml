@@ -4,12 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Movies</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="myTable" class="table">
     <thead>
         <tr>
             <th>
@@ -43,7 +43,10 @@
                 @Html.DisplayFor(modelItem => item.Year_Of_Release)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Media)
+                    @if (item.Media != null && item.Media.Length != 0)
+                    {
+                        <img height="150" src="@Url.Action("GetMovieMedia", "Movies", new {item.Id})" />
+                    }
             </td>
             <td>
                     <a target="_blank" href='@Html.DisplayFor(modelItem => item.IMDB_Url)'>@Html.DisplayFor(modelItem => item.IMDB_Url)</a>

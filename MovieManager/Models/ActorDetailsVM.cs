@@ -1,6 +1,6 @@
 ﻿namespace MovieManager.Models
 {
-    public class ActorDetails
+    public class ActorDetailsVM
     {
         public Actor Actor { get; set; }
         public List<Movie> Movies { get; set; }

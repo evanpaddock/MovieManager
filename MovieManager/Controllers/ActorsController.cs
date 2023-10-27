@@ -55,7 +55,22 @@ namespace MovieManager.Controllers
                 return NotFound();
             }
 
-            return View(actor);
+            ActorDetailsVM vm = new ActorDetailsVM();
+            vm.Actor = actor;
+
+            //TODO: Add movies in
+
+            vm.Movies = await (from movie in _context.Movie
+                               join am in _context.ActorMovie on movie.Id equals am.MovieId
+                               where am.ActorId == id
+                               select movie)
+                               .ToListAsync();
+
+            //TODO: Add sentiment in
+
+            vm.SentimentAnalyzer = SentimentAnalyzer.AnalyzeSentiment($"{vm.Actor.Name} Actor");
+
+            return View(vm);
         }
 
         // GET: Actors/Create

@@ -68,7 +68,7 @@ namespace MovieManager.Controllers
 
             //TODO: Add sentiment in
 
-            vm.SentimentAnalyzer = SentimentAnalyzer.AnalyzeSentiment(vm.Movie.Title);
+            vm.SentimentAnalyzer = SentimentAnalyzer.AnalyzeSentiment(vm.Movie.Title + " Movie");
 
             return View(vm);
         }
@@ -84,7 +84,7 @@ namespace MovieManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,Genre,Year_Of_Release,Media,IMDB_Url")] Movie movie, IFormFile Media)
+        public async Task<IActionResult> Create([Bind("Id,Title,Genre,Year_Of_Release,IMDB_Url")] Movie movie, IFormFile Media)
         {
             if (ModelState.IsValid)
             {
@@ -94,6 +94,7 @@ namespace MovieManager.Controllers
                     await Media.CopyToAsync(memoryStream);
                     movie.Media = memoryStream.ToArray();
                 }
+
                 movie.Id = Guid.NewGuid();
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
@@ -123,7 +124,7 @@ namespace MovieManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ID,Title,Genre,Year_Of_Release,IMDB_Url")] Movie movie, IFormFile Media)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Genre,Year_Of_Release,IMDB_Url")] Movie movie, IFormFile Media)
         {
             if (id != movie.Id)
             {
