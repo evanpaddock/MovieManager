@@ -1,0 +1,115 @@
+﻿@model MovieManager.Models.ActorDetails
+
+@{
+    ViewData["Title"] = $"{Model.Actor.Name} Details";
+}
+
+<h1>@Html.DisplayFor(model => model.Actor.Name) Details</h1>
+
+<div>
+    <h4>Overall, Reddit showed that '@Html.DisplayFor(model => model.Actor.Name)' was @Html.DisplayFor(model => model.SentimentAnalyzer.PercentScore)% @Html.DisplayFor(model => model.SentimentAnalyzer.PosNegNeu)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Actor.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Actor.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Actor.Age)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Actor.Age)
+        </dd>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Actor.Gender)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Actor.Gender)
+        </dd>
+        <dt class="col-sm-2">
+            IMDB Link
+        </dt>
+        <dd class="col-sm-10">
+            <a href="@Html.DisplayFor(model => model.Actor.IMDB_Url)">@Html.DisplayFor(model => model.Actor.IMDB_Url)</a>
+        </dd>
+    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Genre
+                </th>
+                <th>
+                    Release Year
+                </th>
+                <th>
+                    Media
+                </th>
+                <th>
+                    IMDB Link
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Movies)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Year_Of_Release)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Media)
+                    </td>
+                    @if (item.Media != null && item.Media.Length != 0)
+                    {
+                        <img height="150" src="@Url.Action("GetActorPhoto", "Actors", new {item.Id})" />
+                    }
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Top 100 Posts</th>
+                <th>Sentiment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="scrollable">
+                        @foreach (var item in Model.SentimentAnalyzer.Posts)
+                        {
+                            <p>@Html.DisplayFor(modelItem => item)</p>
+                        }
+                    </div>
+                </td>
+                <td>
+                    <p>Overall, Reddit showed that '@Html.DisplayFor(model => model.Actor.Name)' was @Html.DisplayFor(model => model.SentimentAnalyzer.PercentScore)% @Html.DisplayFor(model => model.SentimentAnalyzer.PosNegNeu).</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Actor.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

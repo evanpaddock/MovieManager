@@ -1,0 +1,24 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.scrollable {
+    max-height: 200px; /* Adjust the maximum height as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc; /* Add a border for the scrollable box */
+    padding: 10px; /* Add padding to the scrollable content */
+}

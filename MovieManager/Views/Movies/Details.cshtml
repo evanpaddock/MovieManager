@@ -1,0 +1,124 @@
+﻿@model MovieManager.Models.MovieDetailsVM
+
+@{
+    ViewData["Title"] = $"{Model.Movie.Title}";
+}
+
+<h1>@Html.DisplayFor(model => model.Movie.Title) Details</h1>
+
+<div>
+    <h4>Overall, Reddit showed that '@Html.DisplayFor(model => model.Movie.Title)' was @Html.DisplayFor(model => model.SentimentAnalyzer.PercentScore)% @Html.DisplayFor(model => model.SentimentAnalyzer.PosNegNeu)</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Movie.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Movie.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Movie.Genre)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Movie.Genre)
+        </dd>
+        <dt class = "col-sm-2">
+            Release Year
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Movie.Year_Of_Release)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Movie.Media)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Movie.Media)
+        </dd>
+        <dt class = "col-sm-2">
+            IMDB Link
+        </dt>
+        <dd class = "col-sm-10">
+            <a href="@Html.DisplayFor(model => model.Movie.IMDB_Url)">@Html.DisplayFor(model => model.Movie.IMDB_Url)</a>
+        </dd>
+    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Actor Name
+                </th>
+                <th>
+                    Actor Gender
+                </th>
+                <th>
+                    Actor Age
+                </th>
+                <th>
+                    IMDB Link
+                </th>
+                <th>
+                    Actor Photo
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Actors)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Age)
+                    </td>
+                    <td>
+                        <a target="_blank" href="@Html.DisplayFor(modelItem => item.IMDB_Url)">@Html.DisplayFor(modelItem => item.IMDB_Url)</a>
+                    </td>
+                    <td>
+                        @if (item.Photo != null && item.Photo.Length != 0)
+                        {
+                            <img hegith="150" src="@Url.Action("GetActorPhoto", "Actors", new {item.Id})" />
+                        }
+                    </td>
+                    <td>
+                        <a asp-controller="Actors" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="Actors" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="Actors" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Top 100 Posts</th>
+                <th>Sentiment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="scrollable">
+                        @foreach (var item in Model.SentimentAnalyzer.Posts)
+                        {
+                            <p>@Html.DisplayFor(modelItem => item)</p>
+                        }
+                    </div>
+                </td>
+                <td>
+                    <p>This movie has a @Html.DisplayFor(modelItem => Model.SentimentAnalyzer.PosNegNeu) sentiment.</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Movie.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
